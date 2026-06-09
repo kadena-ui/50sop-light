@@ -1737,12 +1737,12 @@ function render() {
   visible.forEach(post => {
     const card = document.createElement('a');
     card.className = 'post-card fade-in';
-    card.href = post.file ? `/posts/${post.file}` : '#';
+    card.href = post.file ? `/blog-posts/${post.file}` : '#';
 
     // Image on top of card (1:1 square)
     let imgHtml = '';
     if (post.image) {
-      imgHtml = `<img src="/images/${post.image}" alt="${post.title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      imgHtml = `<img src="/blog-images/${post.image}" alt="${post.title}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                  <div class="post-image-placeholder" style="display:none;">${post.category}</div>`;
     } else {
       imgHtml = `<div class="post-image-placeholder">${post.category}</div>`;
