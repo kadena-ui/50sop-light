@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Product Pressure Scan · Kadena Tate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #f6f1e9;
+    --stone: #ebe4da;
+    --charcoal: #181512;
+    --soft-charcoal: #2b2925;
+    --muted: #70675f;
+    --gold: #b9904f;
+    --deep-brown: #2a1b12;
+    --claret: #64283a;
+    --white: #ffffff;
+    --border: rgba(24, 21, 18, 0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    background: var(--ivory);
+    color: var(--charcoal);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ====================================================
+     NAV (matches index.html)
+     ==================================================== */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 56px;
+    background: rgba(0, 0, 0, 0.96);
+    color: var(--white);
+    border-bottom: 1px solid rgba(185, 144, 79, 0.22);
+  }
+
+  .logo {
+    font-size: 18px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    list-style: none;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: rgba(255,255,255,0.78);
+  }
+
+  .nav-links a:hover {
+    color: var(--gold);
+  }
+
+  /* ====================================================
+     STAGE
+     ==================================================== */
+  .stage {
+    padding: 140px 24px 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .frame {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow .dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    margin: 0 12px 3px;
+    vertical-align: middle;
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+  .top-bar .brand {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .top-bar .brand span { color: var(--gold); }
+
+  .progress-track {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    position: relative;
+    margin-bottom: 56px;
+  }
+  .progress-fill {
+    position: absolute;
+    top: 0; left: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* INTRO */
+  .intro-eyebrow { margin-bottom: 32px; color: var(--gold); }
+  .intro h1 {
+    font-size: clamp(40px, 5.6vw, 72px);
+    font-weight: 200;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+  .intro h1 em {
+    font-style: italic;
+    color: var(--claret);
+  }
+  .intro .lede {
+    font-size: clamp(18px, 1.6vw, 21px);
+    font-weight: 300;
+    color: var(--soft-charcoal);
+    max-width: 580px;
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+  .intro .sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 540px;
+    margin-bottom: 48px;
+    line-height: 1.55;
+  }
+  .intro .meta-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 48px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .intro .meta-row .meta { flex: 1; }
+  .intro .meta-row .meta .num {
+    font-size: 28px;
+    font-weight: 200;
+    color: var(--charcoal);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .intro .meta-row .meta .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    background: var(--charcoal);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .btn:hover { background: var(--claret); }
+  .btn .arrow { font-weight: 300; transition: transform 0.3s ease; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  /* QUESTIONS */
+  .q-counter {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .q-counter span { color: var(--gold); }
+
+  .question h2 {
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 200;
+    line-height: 1.18;
+    letter-spacing: -0.005em;
+    margin-bottom: 16px;
+  }
+  .question .q-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 40px;
+    font-style: italic;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 22px 24px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.25s ease, background 0.25s ease;
+    text-align: left;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--soft-charcoal);
+    line-height: 1.5;
+    width: 100%;
+  }
+  .option:hover { border-color: var(--charcoal); }
+  .option.selected {
+    border-color: var(--claret);
+    background: #fbf6ee;
+  }
+  .option .letter {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    flex-shrink: 0;
+    padding-top: 4px;
+    min-width: 18px;
+  }
+  .option.selected .letter { color: var(--claret); }
+
+  .q-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .q-nav .back {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    padding: 8px 0;
+  }
+  .q-nav .back:hover { color: var(--charcoal); }
+  .q-nav .back:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* RESULT */
+  .result-tier {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .result h2 {
+    font-size: clamp(36px, 4.8vw, 60px);
+    font-weight: 200;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+  .result h2 em {
+    font-style: italic;
+    color: var(--claret);
+  }
+  .result .read {
+    font-size: clamp(17px, 1.5vw, 20px);
+    font-weight: 300;
+    color: var(--soft-charcoal);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .result .read.muted {
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .result .pattern {
+    background: var(--white);
+    border-left: 2px solid var(--gold);
+    padding: 28px 32px;
+    margin: 40px 0;
+  }
+  .result .pattern .label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .result .pattern .body {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--soft-charcoal);
+    font-style: italic;
+  }
+
+  .result .signals { margin: 40px 0; }
+  .result .signals h3 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+  .result .signals .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    font-weight: 300;
+  }
+  .result .signals .row:last-child { border-bottom: none; }
+  .result .signals .row .label { color: var(--soft-charcoal); }
+  .result .signals .row .value {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .result .signals .row.flag .value { color: var(--claret); }
+
+  /* CTA */
+  .cta-block {
+    background: var(--charcoal);
+    color: var(--white);
+    padding: 48px 44px;
+    margin-top: 56px;
+  }
+  .cta-block .eyebrow-light {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .cta-block h3 {
+    font-size: clamp(26px, 2.8vw, 36px);
+    font-weight: 200;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    margin-bottom: 18px;
+    color: var(--white);
+  }
+  .cta-block p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.55;
+    margin-bottom: 32px;
+    max-width: 520px;
+  }
+  .cta-block .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .cta-block .price {
+    font-size: 36px;
+    font-weight: 200;
+    color: var(--gold);
+  }
+  .cta-block .price-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .cta-block .btn-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .cta-block .btn-primary {
+    background: var(--gold);
+    color: var(--charcoal);
+    padding: 18px 32px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.25s ease;
+  }
+  .cta-block .btn-primary:hover { background: var(--white); }
+  .cta-block .btn-primary .arrow { transition: transform 0.3s ease; font-weight: 300; }
+  .cta-block .btn-primary:hover .arrow { transform: translateX(4px); }
+  .cta-block .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 18px 28px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.25s ease, color 0.25s ease;
+  }
+  .cta-block .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .fade-in { animation: fadeIn 0.5s ease both; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hidden { display: none !important; }
+
+  /* ====================================================
+     FOOTER (matches index.html)
+     ==================================================== */
+  footer {
+    background: #000;
+    color: rgba(255,255,255,0.72);
+    padding: 72px 56px 42px;
+  }
+  .footer-inner {
+    width: min(1160px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    padding-bottom: 44px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .footer-brand-name {
+    font-size: 30px;
+    line-height: 1;
+    font-weight: 200;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .footer-role,
+  .footer-location,
+  .footer-email-label,
+  .footer-email {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.64);
+    font-weight: 300;
+  }
+  .footer-location { margin-top: 20px; }
+  .footer-email-label {
+    margin-top: 22px;
+    color: var(--gold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .footer-email {
+    color: rgba(255,255,255,0.86);
+    border-bottom: 1px solid rgba(185,144,79,0.45);
+  }
+  .footer-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 44px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.58);
+    transition: 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    width: min(1160px, 100%);
+    margin: 34px auto 0;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.36);
+    text-align: center;
+  }
+
+  /* ====================================================
+     RESPONSIVE
+     ==================================================== */
+  @media (max-width: 760px) {
+    .nav { padding: 18px 22px; }
+    .nav-links { display: none; }
+    .stage { padding: 110px 18px 70px; }
+    .top-bar { margin-bottom: 32px; }
+    .progress-track { margin-bottom: 40px; }
+    .intro .meta-row { flex-direction: column; gap: 18px; }
+    .option { padding: 18px 20px; font-size: 15px; }
+    .cta-block { padding: 36px 28px; }
+    .cta-block .btn-row { flex-direction: column; }
+    .cta-block .btn-primary,
+    .cta-block .btn-secondary { width: 100%; justify-content: center; }
+    footer { padding: 58px 24px 34px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 38px; }
+    .footer-links { gap: 10px 28px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <a class="logo" href="index.html">Kadena Tate</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="canvases.html">Canvas</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li><a href="membership.html">Membership</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="sprint.html">Sprint</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE STAGE -->
+  <div class="stage">
+    <div class="frame">
+
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="brand">50 <span>·</span> Shades <span>·</span> of Paid</div>
+        <div class="eyebrow">The Product Pressure Scan</div>
+      </div>
+
+      <!-- INTRO -->
+      <section id="intro" class="fade-in">
+        <div class="eyebrow intro-eyebrow">A 10 Question Pressure Scan<span class="dot"></span>Product Businesses</div>
+        <div class="intro">
+          <h1>Your product is selling. <em>Is the business safe to scale?</em></h1>
+          <p class="lede">Ten questions. Most are quick. A few will tell you something about your business you have been busy enough to avoid noticing.</p>
+          <p class="sub">This is not a sales quiz. It is a quiet pressure scan for product founders whose orders are coming in, whose customers are buying, and who quietly suspect the structure behind the product cannot hold what is coming next.</p>
+
+          <div class="meta-row">
+            <div class="meta">
+              <span class="num">10</span>
+              <span class="label">Questions</span>
+            </div>
+            <div class="meta">
+              <span class="num">3 min</span>
+              <span class="label">Honest Read</span>
+            </div>
+            <div class="meta">
+              <span class="num">1</span>
+              <span class="label">Pressure Point Revealed</span>
+            </div>
+          </div>
+
+          <button class="btn" onclick="startQuiz()">
+            Begin the Scan <span class="arrow">→</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz" class="hidden">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+          <div class="progress-meta">
+            <span id="qLabel">Question 01</span>
+            <span id="qTotal">of 10</span>
+          </div>
+        </div>
+
+        <div class="question" id="questionBlock"></div>
+
+        <div class="q-nav">
+          <button class="back" id="backBtn" onclick="goBack()" disabled>← Back</button>
+          <div class="eyebrow" id="hintText">Pick the one closest to true</div>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section id="result" class="hidden"></section>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div class="footer-brand-name">Kadena Tate</div>
+        <div class="footer-role">Revenue Strategist</div>
+        <div class="footer-role">Subscription Business Architect</div>
+        <div class="footer-location">Based in Dallas, TX</div>
+        <div class="footer-email-label">Email</div>
+        <a class="footer-email" href="mailto:support@kadenatate.com">support@kadenatate.com</a>
+      </div>
+      <div class="footer-right">
+        <ul class="footer-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="canvases.html">Canvas</a></li>
+          <li><a href="diagnostics.html">Diagnostics</a></li>
+          <li><a href="legal.html">Legal</a></li>
+          <li><a href="mastermind.html">Mastermind</a></li>
+          <li><a href="media.html">Media</a></li>
+          <li><a href="membership.html">Membership</a></li>
+          <li><a href="newsletter.html">Newsletter</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="sprint.html">Sprint</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">50 Shades of Paid® · Stop Being the System™</div>
+  </footer>
+
+<script>
+  // ============================================================
+  // THE 10 QUESTIONS — Product Business Pressure Scan
+  // Each maps to a workbook zone without revealing the scoring,
+  // the multiplier matrix, or the fixes.
+  // ============================================================
+  const questions = [
+    {
+      // Zone One · Revenue Engine (hero SKU dependency)
+      n: "01",
+      q: "If your best-selling product stopped selling for sixty days, what is left standing?",
+      sub: "Not what you'd hope. What would actually hold.",
+      options: [
+        { text: "A real catalog. Three or four products could carry us without it.", w: 1 },
+        { text: "A solid second product. We'd lean on it and feel the gap.", w: 2 },
+        { text: "A long tail of small sellers. None of them are ready to lead.", w: 3 },
+        { text: "Not much. That one product is most of the revenue and I know it.", w: 4 }
+      ]
+    },
+    {
+      // Zone Two · Expense Load (true margin)
+      n: "02",
+      q: "After freight, fees, ads, returns, and the discount you gave to move it, what do you actually keep?",
+      sub: "The number you kept, not the number you priced.",
+      options: [
+        { text: "I know it to the dollar, per SKU. The margin holds after everything.", w: 1 },
+        { text: "Roughly. It's thinner than the cost sheet says, but it's positive.", w: 2 },
+        { text: "Less than I'd like. The real costs keep arriving after the sale.", w: 3 },
+        { text: "Honestly? I look at revenue. I have not run the unit math in a while.", w: 4 }
+      ]
+    },
+    {
+      // Zone Five · Stability Layer (cash runway)
+      n: "03",
+      q: "Revenue drops thirty percent next month. How long does the business run on what is in the account right now?",
+      sub: "Product businesses pay first and collect later. So, the real number.",
+      options: [
+        { text: "Six months or more. The cash conversion cycle is fully funded.", w: 1 },
+        { text: "A few months. Tight, but we'd make decisions instead of panicking.", w: 2 },
+        { text: "Weeks. The next inventory order would become a hard conversation.", w: 3 },
+        { text: "I'd find out in real time. Cash and inventory move faster than I track.", w: 4 }
+      ]
+    },
+    {
+      // Zone Four · Power Leaks (discount dependency)
+      n: "04",
+      q: "When did your last promotion stop being a strategy and start being a habit?",
+      sub: "Be honest about whether the brand sets the price, or the pattern does.",
+      options: [
+        { text: "It hasn't. Discounts are deliberate and rare. Full price converts fine.", w: 1 },
+        { text: "Occasionally. A sale here and there, nothing customers count on.", w: 2 },
+        { text: "Customers wait for the sale now. Full-price weeks feel slow.", w: 3 },
+        { text: "The discount has become the product. Demand collapses without it.", w: 4 }
+      ]
+    },
+    {
+      // Zone Seven · Influence Leverage (platform ownership)
+      n: "05",
+      q: "If the platform you depend on most changed its rules tomorrow, what does your revenue look like in thirty days?",
+      sub: "The algorithm, the marketplace, the one channel that drives the orders.",
+      options: [
+        { text: "Steady. I own the customer list. I can reach them without the platform.", w: 1 },
+        { text: "A dip. We'd lean on owned channels while we adjusted.", w: 2 },
+        { text: "A real problem. Most discovery happens somewhere I do not control.", w: 3 },
+        { text: "I'd be rebuilding. The platform owns the relationship, not me.", w: 4 }
+      ]
+    },
+    {
+      // Zone Six · Asset Packaging (repeat purchase) — note: workbook
+      // uses Asset Packaging for repeat purchase; keep it surface-level.
+      n: "06",
+      q: "A customer buys from you once. What happens next?",
+      sub: "Designed, or left to chance. The honest version.",
+      options: [
+        { text: "A designed path. Refill, reorder, or the next product is built in.", w: 1 },
+        { text: "Some come back. We nudge them, but it isn't a real system yet.", w: 2 },
+        { text: "We hope they come back. There's no path, just a thank-you email.", w: 3 },
+        { text: "We're constantly buying new customers because the old ones don't return.", w: 4 }
+      ]
+    },
+    {
+      // Zone Three · Founder Dependency
+      n: "07",
+      q: "You're unreachable for two weeks starting tomorrow. What stops?",
+      sub: "Missed reorders. Stalled approvals. The decisions that wait for you.",
+      options: [
+        { text: "Nothing critical. Reorders, approvals, and issues run on rules, not me.", w: 1 },
+        { text: "A few approvals pile up. The team handles the rest cleanly.", w: 2 },
+        { text: "Reorders slip. Vendor emails wait. Customer issues escalate to nobody.", w: 3 },
+        { text: "Most of it, quietly. I am still the operating system.", w: 4 }
+      ]
+    },
+    {
+      // Zone Five · Stability (supplier concentration)
+      n: "08",
+      q: "Your main supplier delays production by forty-five days. Now what?",
+      sub: "One supplier, no backup, is a common shape. Name yours.",
+      options: [
+        { text: "We shift to a vetted second source. Pricing and lead time already in writing.", w: 1 },
+        { text: "We'd scramble but survive. We know who to call.", w: 2 },
+        { text: "We'd stock out on the hero product and eat the lost sales.", w: 3 },
+        { text: "One supplier. No backup. I try not to think about it.", w: 4 }
+      ]
+    },
+    {
+      // Zone Eight · Scalability Breaking Point
+      n: "09",
+      q: "Orders double next quarter. Walk through exactly what breaks first.",
+      sub: "Not what gets busy. What breaks. Cash, fulfillment, supplier, or you.",
+      options: [
+        { text: "Nothing breaks. We've stress-tested fulfillment, cash, and suppliers for it.", w: 1 },
+        { text: "Fulfillment strains first. We'd patch it within a few weeks.", w: 2 },
+        { text: "Cash. Reordering twice the inventory is more than the account can hold.", w: 3 },
+        { text: "Me, and then everything downstream of me. I'm already the ceiling.", w: 4 }
+      ]
+    },
+    {
+      // Synthesis — the founder's own read of the whole picture
+      n: "10",
+      q: "Finish this the way you actually feel it: more demand right now would be...",
+      sub: "First instinct. Not the polished answer.",
+      options: [
+        { text: "Welcome. The structure is built to hold it and I know where it would land.", w: 1 },
+        { text: "Good, once I tighten one or two things first.", w: 2 },
+        { text: "Exciting and a little dangerous at the same time.", w: 3 },
+        { text: "The thing I want and the thing I quietly do not feel ready to carry.", w: 4 }
+      ]
+    }
+  ];
+
+  // ============================================================
+  // STATE + RENDER
+  // ============================================================
+  let currentQ = 0;
+  let answers = new Array(questions.length).fill(null);
+
+  function startQuiz() {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('quiz').classList.remove('hidden');
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentQ];
+    const total = questions.length;
+    document.getElementById('qLabel').textContent = `Question ${q.n}`;
+    document.getElementById('qTotal').textContent = `of ${total}`;
+    document.getElementById('progressFill').style.width = `${((currentQ) / total) * 100}%`;
+
+    const block = document.getElementById('questionBlock');
+    block.classList.remove('fade-in');
+    void block.offsetWidth;
+    block.classList.add('fade-in');
+
+    block.innerHTML = `
+      <div class="q-counter">Question <span>${q.n}</span> · ${total - currentQ} remaining</div>
+      <h2>${q.q}</h2>
+      <p class="q-sub">${q.sub}</p>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option ${answers[currentQ] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+            <span class="letter">${String.fromCharCode(65 + i)}</span>
+            <span>${opt.text}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+
+    document.getElementById('backBtn').disabled = currentQ === 0;
+  }
+
+  function selectOption(i) {
+    answers[currentQ] = i;
+    document.querySelectorAll('.option').forEach((el, idx) => {
+      el.classList.toggle('selected', idx === i);
+    });
+    setTimeout(() => {
+      if (currentQ < questions.length - 1) {
+        currentQ++;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }, 350);
+  }
+
+  function goBack() {
+    if (currentQ > 0) {
+      currentQ--;
+      renderQuestion();
+    }
+  }
+
+  // ============================================================
+  // RESULT
+  // ============================================================
+  function showResult() {
+    const total = answers.reduce((sum, idx, i) => sum + questions[i].options[idx].w, 0);
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('qLabel').textContent = 'Complete';
+    document.getElementById('qTotal').textContent = 'Result Below';
+
+    let tier, headline, body1, body2, pattern, signals;
+
+    if (total <= 17) {
+      tier = "Tier One · Built to Hold";
+      headline = `The business can carry weight <em>you have not added yet.</em>`;
+      body1 = "You are in the position most product founders are still working toward. The structure is sound. Revenue is not riding on one product, one platform, or one supplier. Cash is funded ahead of the next inventory cycle. The second sale is designed, not hoped for.";
+      body2 = "If you are still reading, it is probably because one or two answers were not as clean as the rest. That gap is the thing to look at before you add more demand. A business built to hold is the easiest one to break by accident, by scaling the one zone you stopped watching.";
+      pattern = "Your real risk is not collapse. It is the quiet assumption that the smoothness is skill, when some of it is structure you have not pressure-tested at the next volume.";
+      signals = [
+        { label: "Hero Product Concentration", value: "Low", flag: false },
+        { label: "True Margin", value: "Holding", flag: false },
+        { label: "Cash Stability", value: "Funded", flag: false },
+        { label: "Scale Readiness", value: "Strong", flag: false }
+      ];
+    } else if (total <= 27) {
+      tier = "Tier Two · Quiet Pressure";
+      headline = `The product is working. <em>Something behind it is working harder.</em>`;
+      body1 = "On paper, things are fine. Orders are real. Customers are buying. The catalog moves. But somewhere in the last few questions, you recognized a place in the business that is currently carrying more weight than it was built to carry. One product. One channel. One supplier. One discount habit. One you.";
+      body2 = "This is the most expensive place for a product business to sit. Not broken enough to force a change. Not clean enough to scale safely. Revenue can keep climbing here for a year while margin, cash, or control quietly leaks underneath it.";
+      pattern = "The thing you have been calling normal is a load-bearing weakness. It is fine at this volume. It is the first thing that breaks at two times the volume.";
+      signals = [
+        { label: "Hero Product Concentration", value: "Elevated", flag: true },
+        { label: "True Margin", value: "Thinning", flag: true },
+        { label: "Cash Stability", value: "Conditional", flag: true },
+        { label: "Scale Readiness", value: "Not Yet", flag: false }
+      ];
+    } else {
+      tier = "Tier Three · One Shock Away";
+      headline = `Revenue is proof of demand. <em>It is not proof of health.</em>`;
+      body1 = "Most of your answers pointed at the same truth. The business is being held together by one or two things that have not been tested under pressure. One product carrying the revenue. One platform owning the customer. One supplier with no backup. Cash that moves faster than you can track. And a founder still sitting at the center of every decision that matters.";
+      body2 = "This is not failure. It is a stage, and a common one. The product businesses that grow past it are the ones that name the load-bearing weakness clearly before the next surge of demand arrives. The ones that do not, double their sales and lose their margin, their cash, or their footing trying to fulfill it.";
+      pattern = "More demand does not fix this. It charges interest on it. The next level is not hidden in more sales. It is hidden in cleaner margin, stronger repeat purchase, and less dependence on one product, one platform, one supplier, one founder.";
+      signals = [
+        { label: "Hero Product Concentration", value: "Critical", flag: true },
+        { label: "True Margin", value: "Leaking", flag: true },
+        { label: "Cash Stability", value: "Exposed", flag: true },
+        { label: "Scale Readiness", value: "Repair First", flag: true }
+      ];
+    }
+
+    const r = document.getElementById('result');
+    r.innerHTML = `
+      <div class="result fade-in">
+        <div class="result-tier">${tier}</div>
+        <h2>${headline}</h2>
+        <p class="read">${body1}</p>
+        <p class="read muted">${body2}</p>
+
+        <div class="pattern">
+          <div class="label">The Pattern</div>
+          <div class="body">${pattern}</div>
+        </div>
+
+        <div class="signals">
+          <h3>What the answers suggest</h3>
+          ${signals.map(s => `
+            <div class="row ${s.flag ? 'flag' : ''}">
+              <span class="label">${s.label}</span>
+              <span class="value">${s.value}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="cta-block">
+          <div class="eyebrow-light">The Next Move</div>
+          <h3>This scan named the pressure. The workbook finds the one fix that moves the most.</h3>
+          <p>The Product Business Stress Test is the full diagnostic. Eight pressure zones, scored honestly for two and five times your current load. A true margin worksheet. A hero product dependency test. A multiplier matrix that sorts your fixes by total impact, so you install the one that repairs the others. And a ninety day plan for the single constraint that earns the front of the queue.</p>
+
+          <div class="price-row">
+            <span class="price">$97</span>
+            <span class="price-label">Workbook · 50 Pages</span>
+          </div>
+
+          <div class="btn-row">
+            <a href="https://www.revenueremix.com/shop/p/product-business-stress-test" target="_blank" rel="noopener" class="btn-primary">
+              Get the Workbook <span class="arrow">→</span>
+            </a>
+            <button class="btn-secondary" onclick="restart()">Retake the Scan</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('quiz').classList.add('hidden');
+    r.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function restart() {
+    currentQ = 0;
+    answers = new Array(questions.length).fill(null);
+    document.getElementById('result').classList.add('hidden');
+    document.getElementById('quiz').classList.add('hidden');
+    document.getElementById('intro').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
