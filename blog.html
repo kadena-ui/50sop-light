@@ -1704,7 +1704,7 @@ function render() {
   visible.forEach(post => {
     const card = document.createElement('a');
     card.className = 'post-card fade-in';
-    card.href = post.file ? `/${post.file}` : '#';
+    card.href = post.file ? `/posts/${post.file}` : '#';
 
     // Image on top of card (1:1 square)
     let imgHtml = '';
